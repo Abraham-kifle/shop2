@@ -14,10 +14,8 @@ class ProductDetailScreen extends StatelessWidget {
   // static const routeName = '/product-detail';
   @override
   Widget build(BuildContext context) {
-    final loadedProduct = Provider.of<Products>(context)
-        .items
-        .firstWhere((prod) => prod.id == pro);
-
+    final loadedProduct = Provider.of<Products>(context).findById(pro);
+    print(loadedProduct.toString());
     int page = 0;
     // Product itmD = widget.pro;
     return Consumer<Products>(

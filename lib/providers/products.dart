@@ -196,8 +196,7 @@ class Products extends ChangeNotifier {
     print(_count);
   }
 
-  List pages = [ProductOverviewScreen(), ProductDetailScreen()];
-  void changePage(int index) {
-    if (index != 0) {}
+  Product findById(String id) {
+    return _items.firstWhere((prod) => prod.id == id);
   }
 }
