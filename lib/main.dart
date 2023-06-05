@@ -1,22 +1,51 @@
 import 'package:flutter/material.dart';
-import 'package:shop1/screen/product_detail_screen.dart';
+import 'package:shop1/screen/edit_productType.dart';
+import './providers/product_type.dart';
 import './providers/products.dart';
 import 'package:provider/provider.dart';
 import './screen/home_screen.dart';
+import './providers/product.dart';
+import './providers/cart.dart';
+import './providers/orders.dart';
 
 void main() {
+  // debugPaintSizeEnabled = true; // To show widget boundaries
+  // debugPaintBaselinesEnabled = true; // To show widget baselines
+  // debugPaintPointersEnabled = true;
   Provider.debugCheckInvalidValueType = null;
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+  // final Map<String, WidgetBuilder> routes = {
+  //   '/edited-product-types': (context) =>
+  //       EditedProductScreenT(ids: '', titles: '', imageUrls: ''),
+  // };
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => Products(),
+    //final products = Provider.of<Products>(context);
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => Products()),
+        ChangeNotifierProvider(
+            create: (context) => Product(
+                  id: '',
+                  imageUrl: '',
+                  title: '',
+                  types: [],
+                )),
+        ChangeNotifierProvider(
+            create: (context) => ProductType(
+                id: '',
+                name: '',
+                productQuality: '',
+                price: 0.0,
+                description: '',
+                image: '')),
+        ChangeNotifierProvider(create: (ctx) => Cart()),
+        ChangeNotifierProvider(create: (ctx) => Orders()),
+      ],
       child: MaterialApp(
         title: 'My shop',
         theme: ThemeData(
@@ -25,10 +54,7 @@ class MyApp extends StatelessWidget {
           ).copyWith(secondary: Colors.deepOrange),
           fontFamily: 'Noto Serif Ethiopic',
         ),
-        home: const Home(),
-        routes: {
-          // ProductDetailScreen.routeName: (context) => ProductDetailScreen(),
-        },
+        home: Home(),
       ),
     );
   }

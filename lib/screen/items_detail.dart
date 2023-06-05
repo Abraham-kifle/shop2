@@ -1,35 +1,44 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:shop1/models/product.dart';
-import 'package:provider/provider.dart';
-import '../providers/products.dart';
 
-class ItemDetail extends StatefulWidget {
-  final pro;
-  ItemDetail(this.pro);
+class ItemDetailScreen extends StatelessWidget {
+  final String image;
+  final double price;
+  final String description;
+  ItemDetailScreen(this.image, this.price, this.description);
 
-  @override
-  State<ItemDetail> createState() => _ItemDetailState();
-}
-
-class _ItemDetailState extends State<ItemDetail> {
   @override
   Widget build(BuildContext context) {
-    Product itmD = widget.pro;
-    return GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 1,
-          crossAxisSpacing: 2,
-          mainAxisSpacing: 2,
-        ),
-        itemBuilder: ((context, index) => Card(
-              child: Column(
-                children: [
-                  Image.network(itmD.imageUrl),
-                  Text(itmD.price.toString()),
-                ],
-              ),
-            )));
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          SizedBox(
+              height: 300,
+              width: double.infinity,
+              child: Image.network(
+                image,
+                fit: BoxFit.cover,
+              )),
+          const SizedBox(
+            height: 10,
+          ),
+          Text(
+            '\$${price}',
+            style: const TextStyle(color: Colors.grey, fontSize: 20),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            width: double.infinity,
+            child: Text(
+              description,
+              textAlign: TextAlign.center,
+              softWrap: true,
+            ),
+          )
+        ],
+      ),
+    );
   }
 }

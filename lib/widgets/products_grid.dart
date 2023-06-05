@@ -7,29 +7,27 @@ import 'package:provider/provider.dart';
 class Products_Grid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final productData = Provider.of<Products>(context);
+    final productData = Provider.of<Products>(context, listen: false);
     final product = productData.items;
     return Consumer<Products>(
       builder: (context, products, child) => GridView.builder(
         padding: const EdgeInsets.all(10.0),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            childAspectRatio: 4 / 3,
+            childAspectRatio: 4 / 2.5,
             crossAxisSpacing: 10,
             mainAxisSpacing: 10),
-        itemBuilder: (ctx, i) => ProductItem(
-          id: product[i].id,
-          title: product[i].title,
-          imageUrl: product[i].imageUrl,
-          ontap: () {
-            products.change(
-                ProductDetailScreen(
-                  pro: products.items[i].id,
+        itemBuilder: (context, i) {
+          return ChangeNotifierProvider.value(
+            value: product[i],
+            child: ProductItem(
+                // id: product[i].id,
+                // title: product[i].title,
+                // imageUrl: product[i].imageUrl,
+
                 ),
-                products.items[i].title);
-            products.incrementCount();
-          },
-        ),
+          );
+        },
         itemCount: product.length,
       ),
     );

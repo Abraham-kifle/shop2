@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop1/widgets/bottom_navigational_bar.dart';
+import '../widgets/bottom_navigational_bar.dart';
 import '../providers/products.dart';
 import 'product_detail_screen.dart';
 import 'products_overview_screen.dart';
+import '../widgets/favorite.dart';
+import '../providers/cart.dart';
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+enum FilterOptions { Favorites, All }
 
-  @override
-  State<Home> createState() => _HomeState();
-}
+class Home extends StatelessWidget {
+  List<Widget> pages = [
+    const ProductOverviewScreen(),
+    const ProductDetailScreen()
+  ];
 
-class _HomeState extends State<Home> {
-  List<Widget> pages = [ProductOverviewScreen(), ProductDetailScreen()];
   @override
   Widget build(BuildContext context) {
-    final productData = Provider.of<Products>(context);
-    final product = productData.items;
     return Consumer<Products>(
       builder: (context, products, _) => Scaffold(
         appBar: AppBar(
@@ -36,7 +35,7 @@ class _HomeState extends State<Home> {
                             if (products.count == 1) {
                               products.change(
                                   ProductDetailScreen(
-                                    pro: product[products.count].id,
+                                    pro: products.ids,
                                   ),
                                   products.appBarTitle);
                             }
@@ -52,6 +51,34 @@ class _HomeState extends State<Home> {
                       ],
                     )
                   : Text(products.appBarTitle)),
+          actions: <Widget>[
+            PopupMenuButton(
+                onSelected: (FilterOptions selectedvalue) {
+                  if (selectedvalue == FilterOptions.Favorites) {
+                    products.showFavoriteOnly();
+                    products.change(FavoriteProductsScreen(), 'Favorite');
+                    products.setCount(-1);
+                    products.setBottomBar(0);
+                  } else {
+                    products.showAll();
+                    products.change(
+                        const ProductOverviewScreen(), 'KdameGebeya');
+                    products.setCount(0);
+                    products.setBottomBar(0);
+                  }
+                },
+                icon: const Icon(Icons.more_vert),
+                itemBuilder: (_) => [
+                      const PopupMenuItem(
+                        value: FilterOptions.Favorites,
+                        child: Text('Only Favorites'),
+                      ),
+                      const PopupMenuItem(
+                        value: FilterOptions.All,
+                        child: Text('Show All'),
+                      )
+                    ]),
+          ],
         ),
         body: products.page,
         bottomNavigationBar: const BottomNavigationBarWidget(),
