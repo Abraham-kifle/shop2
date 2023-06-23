@@ -10,7 +10,7 @@ class Products extends ChangeNotifier {
       title: 'ጤፍ',
       types: [
         ProductType(
-            id: 'p10',
+            id: 'p11',
             name: 'ጤፍ',
             productQuality: 'ልዩ ማኛ ጤፍ',
             price: 60.0,
