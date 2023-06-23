@@ -283,16 +283,74 @@ class Products extends ChangeNotifier {
     return _items.firstWhere((prod) => prod.id == id);
   }
 
+  List<ProductType> get allProductTypes {
+    List<ProductType> allTypes = [];
+
+    for (var product in _items) {
+      allTypes.addAll(product.types);
+    }
+    return allTypes;
+  }
+
+  ProductType findByIdT(
+    String id,
+  ) {
+    return allProductTypes.firstWhere((type) => type.id == id);
+  }
+
   int _bottomBar = 0;
   int get bottomBar => _bottomBar;
   void setBottomBar(int i) {
     _bottomBar = i;
   }
 
-  List<ProductType> productTypes = [];
-
   void addProduct(Product product) {
-    _items.add(product);
+    bool productExists = _items.any((p) => p.title == product.title);
+
+    if (!productExists) {
+      final newProduct = Product(
+        id: DateTime.now().toString(),
+        title: product.title,
+        imageUrl: product.imageUrl,
+        types: [],
+      );
+      _items.add(newProduct);
+      notifyListeners();
+    }
+  }
+
+  void addProductTypes(ProductType productTypes) {
+    for (var product in _items) {
+      if (product.title == productTypes.name) {
+        if (!product.types.any(
+            (type) => type.productQuality == productTypes.productQuality)) {
+          productTypes.id = DateTime.now().toString();
+          product.types.add(productTypes);
+        }
+      }
+    }
+
     notifyListeners();
+  }
+
+  void updateProduct(String id, ProductType newProductType) {
+    for (var product in _items) {
+      final prodTypeIndex =
+          product.types.indexWhere((prodType) => prodType.id == id);
+      if (prodTypeIndex >= 0) {
+        product.types[prodTypeIndex] = newProductType;
+        notifyListeners();
+        break;
+      } else {
+        print('...');
+      }
+    }
+  }
+
+  void deleteProduct(String id) {
+    for (var product in _items) {
+      product.types.removeWhere((type) => type.id == id);
+      notifyListeners();
+    }
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../widgets/products_grid.dart';
 
 class ProductOverviewScreen extends StatelessWidget {
+  static const routeName = '/product-overview';
   const ProductOverviewScreen({super.key});
 
   @override

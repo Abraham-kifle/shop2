@@ -30,7 +30,7 @@ class Home extends StatelessWidget {
                             products.decrementCount();
                             if (products.count == 0) {
                               products.change(
-                                  ProductOverviewScreen(), 'KdameGebeya');
+                                  const ProductOverviewScreen(), 'KdameGebeya');
                             }
                             if (products.count == 1) {
                               products.change(

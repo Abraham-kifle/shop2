@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ProductType extends ChangeNotifier {
-  final String id;
+  var id;
   final String name;
   final String productQuality;
   final double price;
@@ -25,8 +25,4 @@ class ProductType extends ChangeNotifier {
     isFavorite = !isFavorite;
     notifyListeners();
   }
-
-  where(Function(dynamic prodItem) param0) {}
-
-  copyWith({required String name}) {}
 }

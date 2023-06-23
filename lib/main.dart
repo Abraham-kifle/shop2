@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop1/screen/edit_productType.dart';
+import 'package:shop1/screen/products_overview_screen.dart';
 import './providers/product_type.dart';
 import './providers/products.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +8,7 @@ import './screen/home_screen.dart';
 import './providers/product.dart';
 import './providers/cart.dart';
 import './providers/orders.dart';
+import 'widgets/user_product_item.dart';
 
 void main() {
   // debugPaintSizeEnabled = true; // To show widget boundaries
@@ -54,7 +56,13 @@ class MyApp extends StatelessWidget {
           ).copyWith(secondary: Colors.deepOrange),
           fontFamily: 'Noto Serif Ethiopic',
         ),
+        debugShowCheckedModeBanner: false,
         home: Home(),
+        routes: {
+          EditedProductScreenT.routeName: (ctx) => EditedProductScreenT(),
+          ProductOverviewScreen.routeName: (ctx) =>
+              const ProductOverviewScreen(),
+        },
       ),
     );
   }
