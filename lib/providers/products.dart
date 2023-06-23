@@ -20,7 +20,7 @@ class Products extends ChangeNotifier {
             isFavorite: false,
             isAddToCart: false),
         ProductType(
-            id: 'p12',
+            id: 'p10',
             name: 'ጤፍ',
             productQuality: 'ማኛ ጤፍ',
             price: 50,
