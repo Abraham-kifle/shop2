@@ -8,7 +8,6 @@ import './screen/home_screen.dart';
 import './providers/product.dart';
 import './providers/cart.dart';
 import './providers/orders.dart';
-import 'widgets/user_product_item.dart';
 
 void main() {
   // debugPaintSizeEnabled = true; // To show widget boundaries
