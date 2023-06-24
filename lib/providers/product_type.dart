@@ -25,4 +25,16 @@ class ProductType extends ChangeNotifier {
     isFavorite = !isFavorite;
     notifyListeners();
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'productQuality': productQuality,
+      'price': price,
+      'description': description,
+      'image': image,
+      'isFavorite': isFavorite
+    };
+  }
 }

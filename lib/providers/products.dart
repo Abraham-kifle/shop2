@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'product.dart';
 import '../screen/products_overview_screen.dart';
 import '../providers/product_type.dart';
+import 'package:http/http.dart' as http;
 
 class Products extends ChangeNotifier {
   final List<Product> _items = [
@@ -306,26 +308,67 @@ class Products extends ChangeNotifier {
 
   void addProduct(Product product) {
     bool productExists = _items.any((p) => p.title == product.title);
+    const urls =
+        'https://kdame-gebeya-75b59-default-rtdb.firebaseio.com/products.json';
 
-    if (!productExists) {
-      final newProduct = Product(
-        id: DateTime.now().toString(),
-        title: product.title,
-        imageUrl: product.imageUrl,
-        types: [],
-      );
-      _items.add(newProduct);
-      notifyListeners();
-    }
+    final url = Uri.parse(urls);
+
+    http
+        .post(url,
+            body: json.encode({
+              'title': product.title,
+              'imageUrl': product.imageUrl,
+              'types': [
+                {
+                  'id': DateTime.now().toString(),
+                  'name': '',
+                  'productQuality': '',
+                  'price': '',
+                  'description': '',
+                  'image': '',
+                  'isFavorite': '',
+                }
+              ],
+            }))
+        .then((response) {
+      if (!productExists) {
+        final newProduct = Product(
+          id: DateTime.now().toString(),
+          title: product.title,
+          imageUrl: product.imageUrl,
+          types: product.types,
+        );
+        _items.add(newProduct);
+        notifyListeners();
+      }
+    });
   }
 
-  void addProductTypes(ProductType productTypes) {
+  void addProductTypes(ProductType productTypes) async {
     for (var product in _items) {
       if (product.title == productTypes.name) {
         if (!product.types.any(
             (type) => type.productQuality == productTypes.productQuality)) {
           productTypes.id = DateTime.now().toString();
           product.types.add(productTypes);
+
+          final url = Uri.parse(
+              'https://kdame-gebeya-75b59-default-rtdb.firebaseio.com/products/${product.id}/types.json');
+
+          try {
+            final response = await http.patch(url,
+                body: json.encode({
+                  'types': product.types.map((type) => type.toJson()).toList()
+                }));
+
+            if (response.statusCode == 200) {
+              print('product type added successfully to Firebase.');
+            } else {
+              print('Failed to add product type to Firebase.');
+            }
+          } catch (e) {
+            print('Failed to add product type to Firebase. Error: $e');
+          }
         }
       }
     }
