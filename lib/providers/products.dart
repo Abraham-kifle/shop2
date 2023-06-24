@@ -71,7 +71,7 @@ class Products extends ChangeNotifier {
           isAddToCart: false,
         ),
         ProductType(
-            id: 'p29',
+            id: 'p22',
             name: 'ጤፍ',
             productQuality: 'ምኛ ስንዴ',
             price: 30,
@@ -81,7 +81,7 @@ class Products extends ChangeNotifier {
             isFavorite: false,
             isAddToCart: false),
         ProductType(
-            id: 'p28',
+            id: 'p23',
             name: 'ጤፍ',
             productQuality: 'መለስትኛ',
             price: 30,
